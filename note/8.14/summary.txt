@@ -1,0 +1,40 @@
+This week, i mainly learned Spring security and JWT, and by the way
+i finished writing of exception handling 
+
+Due to the daily completion of part of them, i am only summarizing 
+the overall structure this time instead of summarizing by day
+
+- Exception Handler
+    - make exception-code.properties file as configuration file (ExceptionCodeConfiguration.class)
+    - define the exception codes and corresponding exception messages (exception-code.properties)
+    - Use the @ControllerAdvice annotation for global unified exception handling
+      I created some custom Exceptions with UnifyResponse entity as return which can also be defined customly
+
+- Spring security
+    - i tried but something is confusing me, so i deleted the code and excluded it on @SpringBootApplication
+    - i will continue to learn in the future by watching some materials from bilibili lessons
+
+- JWT
+    - i create a userValidation model to store users' user_name and password
+      (this part can be taken place by redis i think, but i stored in mysql currently)
+    
+    !!! Question: (Is it better to store account passwords in Redis? 
+                Or is it better to store them in a separate mysql table? )
+        (because i think the data are not security in redis, but i found someone stores 
+        the passwords in redis. it makes me confused. )
+    
+    - InterceptorConfiguration.class implements WebMvcConfigurer interfece
+      to add the PermissionInterceptor HandlerInterceptor
+    
+    - define custom @ScopeLevel(int level) annotation 
+        - if user's scope is greater than methods' scope level, he can access the api methods
+          else throw new forbidden exception
+    
+    !!! Question: (Similarly, need users' scope level store in the redis? )
+        (I am confused about the using of redis, i think it can improve the data accessing speed
+        but not for long keeping, so why does such data need to be stored here? 
+        i store these data in ThreadLocal currently)
+
+    - JwtToken.class defined the creation of token and verification
+
+

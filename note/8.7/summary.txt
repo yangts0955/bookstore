@@ -115,9 +115,9 @@ Sunday:
 
 Future learning plan:
 - need to achieve:
-    Exception Handler
+    Exception Handler (mostly okay)
     JWT and session
-    Sping JUnit
+    Sping JUnit (help!!!)
     Redis maybe
     docker compose (seems not hard, though not familar)
 
@@ -126,9 +126,9 @@ Future learning plan:
     Spring HATEOAS
     (i found some materials by myself, but more is better)
 
-(i planned it according to the book project document. if needed, it can be added)
+(i planned it according to the bookstore project document. if needed, it can be added)
 
-Some other commands recorded for easy use in future, and hope to request for your guidance
+Some other commands recorded for easy use in the future, and hope to request for your guidance
 
 - command to create table
 create table book(

@@ -5,17 +5,17 @@ import lombok.*;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+
+@Entity
 @Getter
 @Setter
 @Builder
-@Entity
-@AllArgsConstructor
 @NoArgsConstructor
-public class User {
+@AllArgsConstructor
+public class userValidation {
 
     @Id
-    private Long id;
-    private String name;
-    private String content;
-
+    int userId;
+    private String user_name;
+    private String password;
 }

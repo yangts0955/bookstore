@@ -2,6 +2,8 @@ package com.example.dockerandmysql.service;
 
 import com.example.dockerandmysql.DTO.BookDTO;
 import com.example.dockerandmysql.VO.BookVO;
+import com.example.dockerandmysql.exception.NotFoundException;
+import com.example.dockerandmysql.login.interceptor.ScopeLevel;
 import com.example.dockerandmysql.model.Book;
 import com.example.dockerandmysql.repository.BookRepository;
 import org.springframework.beans.BeanUtils;
@@ -42,7 +44,8 @@ public class BookService {
 
     public BookVO getBookById(int id){
         Optional<Book> book = bookRepository.findById(id);
-        book.orElseThrow(() -> new RuntimeException("book not found"));
+        book.orElseThrow(() -> new NotFoundException(10001));
+//        book.orElseThrow(() -> new RuntimeException("book not found"));
 
         BookVO bookVO = new BookVO();
         //copy properties from finding book to a new book vo which is needed to return
