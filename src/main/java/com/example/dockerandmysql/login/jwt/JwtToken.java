@@ -18,54 +18,51 @@ public class JwtToken {
     private static Integer expiredTimeIn;
     private static Integer defaultScope = 8;
 
-    @Value("${jwt.jwt-key}")
-    public void setJwtKey(String jwtKey){
-        JwtToken.jwtKey = jwtKey;
-    }
-
-    @Value("${jwt.token-expired-in}")
-    public void setExpiredTimeIn(Integer expiredTimeIn){
-        JwtToken.expiredTimeIn = expiredTimeIn;
-    }
-
-    public static Optional<Map<String, Claim>> getClaims(String token){
+    public static Optional<Map<String, Claim>> getClaims(String token) {
         DecodedJWT decodedJWT;
         Algorithm algorithm = Algorithm.HMAC256(JwtToken.jwtKey);
         JWTVerifier jwtVerifier = JWT.require(algorithm).build();
 
-        try{
+        try {
             decodedJWT = jwtVerifier.verify(token);
-        }catch (JWTVerificationException e){
+        } catch (JWTVerificationException e) {
             return Optional.empty();
         }
         return Optional.of(decodedJWT.getClaims());
     }
 
-    public static Boolean verifyToken(String token){
-        return getClaims(token).isPresent();
+    public static Boolean verifyToken(String token) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(JwtToken.jwtKey);
+            JWTVerifier verifier = JWT.require(algorithm).build();
+            verifier.verify(token);
+        } catch (JWTVerificationException e) {
+            return false;
+        }
+        return true;
     }
 
-    public static String getToken(int uid, Integer scope){
+    public static String getToken(int uid, Integer scope) {
         Algorithm algorithm = Algorithm.HMAC256(JwtToken.jwtKey);
         Map<String, Date> map = JwtToken.calculateExpiredTimeIn();
 
         return JWT.create()
-                .withClaim("uid",uid)
-                .withClaim("scope",scope)
-                .withExpiresAt(map.get("expriedTime"))
+                .withClaim("uid", uid)
+                .withClaim("scope", scope)
                 .withIssuedAt(map.get("now"))
+                .withExpiresAt(map.get("expiredTime"))
                 .sign(algorithm);
     }
 
-    public static String makeToken(int uid, Integer scope){
+    public static String makeToken(int uid, Integer scope) {
         return JwtToken.getToken(uid, scope);
     }
 
-    public static String makeToken(int uid){
+    public static String makeToken(int uid) {
         return JwtToken.getToken(uid, defaultScope);
     }
 
-    private static Map<String,Date> calculateExpiredTimeIn(){
+    private static Map<String, Date> calculateExpiredTimeIn() {
         Map<String, Date> map = new HashMap<>();
         Calendar calendar = Calendar.getInstance();
         Date now = calendar.getTime();
@@ -75,5 +72,15 @@ public class JwtToken {
         map.put("now", now);
         map.put("expiredTime", calendar.getTime());
         return map;
+    }
+
+    @Value("${jwt.jwt-key}")
+    public void setJwtKey(String jwtKey) {
+        JwtToken.jwtKey = jwtKey;
+    }
+
+    @Value("${jwt.token-expired-in}")
+    public void setExpiredTimeIn(Integer expiredTimeIn) {
+        JwtToken.expiredTimeIn = expiredTimeIn;
     }
 }

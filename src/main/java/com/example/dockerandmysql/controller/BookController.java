@@ -1,11 +1,10 @@
 package com.example.dockerandmysql.controller;
 
 
-import com.example.dockerandmysql.DTO.BookDTO;
-import com.example.dockerandmysql.VO.BookVO;
+import com.example.dockerandmysql.dto.BookDTO;
+import com.example.dockerandmysql.vo.BookVO;
 import com.example.dockerandmysql.login.interceptor.ScopeLevel;
-import com.example.dockerandmysql.model.Book;
-import com.example.dockerandmysql.service.BookService;
+import com.example.dockerandmysql.service.BookServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,27 +15,27 @@ import java.util.List;
 public class BookController {
 
     @Autowired
-    private BookService bookService;
+    private BookServiceImpl bookService;
 
-    @ScopeLevel(12)
+    @ScopeLevel(8)
     @PostMapping("/add-new-book")
-    public void addNewBook(@RequestBody BookDTO book){
+    public void addNewBook(@RequestBody BookDTO book) {
         bookService.addNewBook(book);
     }
 
+    @ScopeLevel(8)
     @PostMapping("/add-book")
-    public void addBook(@RequestBody BookDTO book){
+    public void addBook(@RequestBody BookDTO book) {
         bookService.addNewBook(book);
     }
 
-    @ScopeLevel(4)
     @GetMapping("/book/{id}")
-    public BookVO getBookById(@PathVariable int id){
+    public BookVO getBookById(@PathVariable int id) {
         return bookService.getBookById(id);
     }
 
     @GetMapping("/book-list")
-    public List<BookVO> getAllBooks(){
+    public List<BookVO> getAllBooks() {
         return bookService.getAllBooks();
     }
 }

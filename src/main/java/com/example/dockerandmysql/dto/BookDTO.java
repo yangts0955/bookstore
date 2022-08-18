@@ -1,20 +1,16 @@
-package com.example.dockerandmysql.VO;
-
+package com.example.dockerandmysql.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
-public class BookVO {
-    int id;
+public class BookDTO {
     String author;
     String title;
     String category;
     String price;
-    int total_count;
+    int count;
 }

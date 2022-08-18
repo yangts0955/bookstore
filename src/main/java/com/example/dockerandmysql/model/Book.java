@@ -2,9 +2,9 @@ package com.example.dockerandmysql.model;
 
 import lombok.*;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Getter
@@ -12,6 +12,7 @@ import javax.persistence.Id;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "Book")
 public class Book {
 
     @Id
@@ -20,10 +21,9 @@ public class Book {
     String title;
     String category;
     String price;
-//    @Column(name = "total_count")
+    //    @Column(name = "total_count")
     int total_count;
     int sold;
-
 
 
 }

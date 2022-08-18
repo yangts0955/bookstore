@@ -11,12 +11,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class InterceptorConfiguration implements WebMvcConfigurer {
 
     @Bean
-    public HandlerInterceptor getPermissionInterceptor(){
+    public HandlerInterceptor getPermissionInterceptor() {
         return new PermissionInterceptor();
     }
 
     @Override
-    public void addInterceptors(InterceptorRegistry registry){
+    public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(this.getPermissionInterceptor());
     }
 }

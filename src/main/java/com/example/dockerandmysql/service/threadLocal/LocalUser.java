@@ -20,7 +20,7 @@ public class LocalUser {
         LocalUser.threadLocal.remove();
     }
 
-    public static userValidation getUser(){
+    public static userValidation getUser() {
         Map<String, Object> map = LocalUser.threadLocal.get();
         userValidation user = (userValidation) map.get("user");
         return user;
@@ -28,7 +28,7 @@ public class LocalUser {
 
     public static Integer getScope() {
         Map<String, Object> map = LocalUser.threadLocal.get();
-        Integer scope = (Integer)map.get("scope");
+        Integer scope = (Integer) map.get("scope");
         return scope;
     }
 }

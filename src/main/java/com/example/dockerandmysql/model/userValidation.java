@@ -2,8 +2,10 @@ package com.example.dockerandmysql.model;
 
 import lombok.*;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 
 @Entity
@@ -12,10 +14,11 @@ import javax.persistence.Id;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "user_validation")
 public class userValidation {
 
     @Id
     int userId;
-    private String user_name;
+    private String userName;
     private String password;
 }

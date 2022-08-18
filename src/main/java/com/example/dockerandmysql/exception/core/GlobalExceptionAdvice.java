@@ -1,6 +1,5 @@
 package com.example.dockerandmysql.exception.core;
 
-import com.example.dockerandmysql.exception.core.ExceptionCodeConfiguration;
 import com.example.dockerandmysql.exception.httpException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -24,20 +23,20 @@ public class GlobalExceptionAdvice {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
-    public UnifyResponse handleException(HttpServletRequest req, Exception e){
+    public UnifyResponse handleException(HttpServletRequest req, Exception e) {
         String requestUrl = req.getRequestURI();
         String method = req.getMethod();
         System.out.println(e);
-        return new UnifyResponse(new Date().toString(),9999, "server error", method + " "+ requestUrl);
+        return new UnifyResponse(new Date().toString(), 9999, "server error", method + " " + requestUrl);
     }
 
     @ExceptionHandler(httpException.class)
-    public ResponseEntity<UnifyResponse> handleHttpException(HttpServletRequest req, httpException e){
+    public ResponseEntity<UnifyResponse> handleHttpException(HttpServletRequest req, httpException e) {
         String requestUrl = req.getRequestURI();
         String method = req.getMethod();
 
 //        ResponseEntity
-        UnifyResponse message = new UnifyResponse(new Date().toString(), e.getCode(),codeConfiguration.getMessage(e.getCode()), method + " " + requestUrl);
+        UnifyResponse message = new UnifyResponse(new Date().toString(), e.getCode(), codeConfiguration.getMessage(e.getCode()), method + " " + requestUrl);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpStatus httpStatus = HttpStatus.resolve(e.getHttpStatusCode());

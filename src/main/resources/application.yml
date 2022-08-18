@@ -14,5 +14,5 @@ spring:
 
 jwt:
   jwt-key: neil-yang
-  token-expired-in: 86400000
+  token-expired-in: 86400
 

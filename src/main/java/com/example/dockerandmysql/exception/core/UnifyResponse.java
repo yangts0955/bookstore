@@ -1,8 +1,5 @@
 package com.example.dockerandmysql.exception.core;
 
-import java.util.Timer;
-import java.util.zip.DataFormatException;
-
 public class UnifyResponse {
 
     private String timer;
@@ -10,18 +7,18 @@ public class UnifyResponse {
     private String message;
     private String request;
 
-    public UnifyResponse(String timer,int code, String message, String request){
+    public UnifyResponse(String timer, int code, String message, String request) {
         this.timer = timer;
         this.code = code;
         this.message = message;
         this.request = request;
     }
 
-    public String getTimer(){
+    public String getTimer() {
         return timer;
     }
 
-    public int getCode(){
+    public int getCode() {
         return code;
     }
 
@@ -32,7 +29,6 @@ public class UnifyResponse {
     public String getRequest() {
         return request;
     }
-
 
 
 }

@@ -8,21 +8,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ConfigurationProperties(prefix = "exception")
-@PropertySource(value = "classpath:configuration/exception-code.properties")
+@PropertySource(value = "classpath:exception-code.properties")
 @Component
 public class ExceptionCodeConfiguration {
 
-    private Map<Integer,String> codes = new HashMap<>();
+    private Map<Integer, String> codes = new HashMap<>();
 
-    public Map<Integer, String> getCodes(){
+    public Map<Integer, String> getCodes() {
         return codes;
     }
 
-    public void setCodes(Map<Integer,String> codes){
+    public void setCodes(Map<Integer, String> codes) {
         this.codes = codes;
     }
 
-    public String getMessage(int code){
+    public String getMessage(int code) {
         String message = codes.get(code);
         return message;
     }
