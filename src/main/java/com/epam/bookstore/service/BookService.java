@@ -10,6 +10,8 @@ public interface BookService {
 
     void addNewBook(BookDTO book);
 
+    void addBook(BookDTO book);
+
     BookVO getBookById(int id);
 
     List<BookVO> getAllBooks();

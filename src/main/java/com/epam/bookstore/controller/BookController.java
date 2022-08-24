@@ -28,7 +28,7 @@ public class BookController {
     @ScopeLevel(8)
     @PostMapping("/add-book")
     public void addBook(@RequestBody BookDTO book) {
-        bookService.addNewBook(book);
+        bookService.addBook(book);
         UnifyResponse.createSuccess(0);
     }
 

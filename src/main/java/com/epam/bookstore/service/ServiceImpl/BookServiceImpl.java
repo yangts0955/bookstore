@@ -1,7 +1,6 @@
 package com.epam.bookstore.service.ServiceImpl;
 
 import com.epam.bookstore.dto.BookDTO;
-import com.epam.bookstore.exception.core.UnifyResponse;
 import com.epam.bookstore.service.BookService;
 import com.epam.bookstore.vo.BookVO;
 import com.epam.bookstore.exception.NotFoundException;
@@ -23,13 +22,6 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void addNewBook(BookDTO book) {
-        Optional<Book> existedBook = bookRepository.findByTitleAndAuthor(book.getTitle(), book.getAuthor());
-        existedBook.ifPresentOrElse(b -> {
-            //add count to existed book's total count
-            b.setTotal_count(b.getTotal_count() + book.getCount());
-            bookRepository.save(b);
-        }, () -> {
-            //when book does not exist
             Book newBook = Book.builder()
                     .author(book.getAuthor())
                     .title(book.getTitle())
@@ -39,7 +31,16 @@ public class BookServiceImpl implements BookService {
                     .build();
 
             bookRepository.save(newBook);
-        });
+    }
+
+    @Override
+    public void addBook(BookDTO book) {
+        Optional<Book> existedBook = bookRepository.findByTitleAndAuthor(book.getTitle(), book.getAuthor());
+        existedBook.ifPresentOrElse(b -> {
+            //add count to existed book's total count
+            b.setTotal_count(b.getTotal_count() + book.getCount());
+            bookRepository.save(b);
+        }, () -> {throw new NotFoundException(10001);});
     }
 
     @Override
