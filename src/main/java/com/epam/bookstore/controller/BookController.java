@@ -2,13 +2,12 @@ package com.epam.bookstore.controller;
 
 
 import com.epam.bookstore.config.interceptor.ScopeLevel;
-import com.epam.bookstore.exception.core.UnifyResponse;
+import com.epam.bookstore.exception.CommonResult;
 import com.epam.bookstore.service.ServiceImpl.BookServiceImpl;
 import com.epam.bookstore.vo.BookVO;
 import com.epam.bookstore.dto.BookDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -20,25 +19,25 @@ public class BookController {
 
     @ScopeLevel(8)
     @PostMapping("/add-new-book")
-    public void addNewBook(@RequestBody BookDTO book) {
-        bookService.addNewBook(book);
-        UnifyResponse.createSuccess(0);
+    public CommonResult<Boolean> addNewBook(@RequestBody BookDTO book) {
+        Boolean result = bookService.addNewBook(book);
+        return CommonResult.success(result);
     }
 
     @ScopeLevel(8)
     @PostMapping("/add-book")
-    public void addBook(@RequestBody BookDTO book) {
-        bookService.addBook(book);
-        UnifyResponse.createSuccess(0);
+    public CommonResult<Boolean> addBook(@RequestBody BookDTO book) {
+        Boolean result = bookService.addBook(book);
+        return CommonResult.success(result);
     }
 
     @GetMapping("/book/{id}")
-    public BookVO getBookById(@PathVariable int id) {
-        return bookService.getBookById(id);
+    public CommonResult<BookVO> getBookById(@PathVariable int id) {
+        return CommonResult.success(bookService.getBookById(id));
     }
 
     @GetMapping("/book-list")
-    public List<BookVO> getAllBooks() {
-        return bookService.getAllBooks();
+    public CommonResult<List<BookVO>> getAllBooks() {
+        return CommonResult.success(bookService.getAllBooks());
     }
 }

@@ -1,8 +1,8 @@
 package com.epam.bookstore.service.ServiceImpl;
 
 import com.epam.bookstore.entity.User;
-import com.epam.bookstore.exception.NotFoundException;
-import com.epam.bookstore.exception.UnAuthenticateException;
+import com.epam.bookstore.exception.ApiException;
+import com.epam.bookstore.exception.ResultCode;
 import com.epam.bookstore.config.jwt.JwtToken;
 import com.epam.bookstore.repository.UserRepository;
 import com.epam.bookstore.service.LoginService;
@@ -19,11 +19,11 @@ public class LoginServiceImpl implements LoginService {
     public String verifyUserPassword(User userValidation){
         User user = userRepository.findByUserName(userValidation.getUserName());
         if (user == null){
-            throw new NotFoundException(10003);
+            throw new ApiException(ResultCode.FAILED);
         }
         if (user.getPassword().equals(userValidation.getPassword())){
             return JwtToken.makeToken(user.getUserId());
         }
-        throw new UnAuthenticateException(10005);
+        throw new ApiException(ResultCode.FAILED);
     }
 }

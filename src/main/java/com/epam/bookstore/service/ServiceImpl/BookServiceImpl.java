@@ -1,9 +1,10 @@
 package com.epam.bookstore.service.ServiceImpl;
 
 import com.epam.bookstore.dto.BookDTO;
+import com.epam.bookstore.exception.ApiException;
+import com.epam.bookstore.exception.ResultCode;
 import com.epam.bookstore.service.BookService;
 import com.epam.bookstore.vo.BookVO;
-import com.epam.bookstore.exception.NotFoundException;
 import com.epam.bookstore.entity.Book;
 import com.epam.bookstore.repository.BookRepository;
 import org.springframework.beans.BeanUtils;
@@ -21,32 +22,30 @@ public class BookServiceImpl implements BookService {
     private BookRepository bookRepository;
 
     @Override
-    public void addNewBook(BookDTO book) {
-            Book newBook = Book.builder()
-                    .author(book.getAuthor())
-                    .title(book.getTitle())
-                    .category(book.getCategory())
-                    .price(book.getPrice())
-                    .total_count(book.getCount())
-                    .build();
-
+    public Boolean addNewBook(BookDTO bookDTO) {
+            Book newBook = bookDTO.convertBookDTOToBook();
+            if (newBook == null){
+                throw new ApiException(ResultCode.FAILED);
+            }
             bookRepository.save(newBook);
+            return true;
     }
 
     @Override
-    public void addBook(BookDTO book) {
-        Optional<Book> existedBook = bookRepository.findByTitleAndAuthor(book.getTitle(), book.getAuthor());
+    public Boolean addBook(BookDTO bookDTO) {
+        Optional<Book> existedBook = bookRepository.findByTitleAndAuthor(bookDTO.getTitle(), bookDTO.getAuthor());
         existedBook.ifPresentOrElse(b -> {
             //add count to existed book's total count
-            b.setTotal_count(b.getTotal_count() + book.getCount());
+            b.setTotal_count(b.getTotal_count() + bookDTO.getCount());
             bookRepository.save(b);
-        }, () -> {throw new NotFoundException(10001);});
+        }, () -> {throw new ApiException(ResultCode.FAILED);});
+        return true;
     }
 
     @Override
     public BookVO getBookById(int id) {
         Optional<Book> book = bookRepository.findById(id);
-        book.orElseThrow(() -> new NotFoundException(10001));
+        book.orElseThrow(() -> new ApiException(ResultCode.FAILED));
 
         BookVO bookVO = new BookVO();
         //copy properties from finding book to a new book vo which is needed to return
@@ -64,7 +63,7 @@ public class BookServiceImpl implements BookService {
             BeanUtils.copyProperties(book, bookVO);
             return bookVO;
         }).collect(Collectors.toList());
-        System.out.println(book_list);
+//        System.out.println(book_list);
         return book_list;
     }
 }

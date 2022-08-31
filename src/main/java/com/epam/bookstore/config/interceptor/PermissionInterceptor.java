@@ -3,9 +3,9 @@ package com.epam.bookstore.config.interceptor;
 import com.auth0.jwt.interfaces.Claim;
 import com.epam.bookstore.config.jwt.JwtToken;
 import com.epam.bookstore.entity.User;
+import com.epam.bookstore.exception.ApiException;
+import com.epam.bookstore.exception.ResultCode;
 import com.epam.bookstore.service.ServiceImpl.UserServiceImpl;
-import com.epam.bookstore.exception.ForbiddenException;
-import com.epam.bookstore.exception.UnAuthenticateException;
 import com.epam.bookstore.config.threadLocal.LocalUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -36,26 +36,26 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 
         String bearerToken = request.getHeader("Authorization");
         if (!StringUtils.hasText(bearerToken)) {
-            throw new UnAuthenticateException(10002);
+            throw new ApiException(ResultCode.UNAUTHORIZED);
         }
 
         if (!bearerToken.startsWith("Bearer")) {
-            throw new UnAuthenticateException(10002);
+            throw new ApiException(ResultCode.UNAUTHORIZED);
         }
         String tokens[] = bearerToken.split(" ");
         if (!(tokens.length == 2)) {
-            throw new UnAuthenticateException(10002);
+            throw new ApiException(ResultCode.UNAUTHORIZED);
         }
         String token = tokens[1];
 
         //!!!!!!!!!!!!获取token验证???
         if (!JwtToken.verifyToken(token)){
-            throw new UnAuthenticateException(10006);
+            throw new ApiException(ResultCode.UNAUTHORIZED);
         }
 
 
         Optional<Map<String, Claim>> optionalMap = JwtToken.getClaims(token);
-        Map<String, Claim> map = optionalMap.orElseThrow(() -> new UnAuthenticateException(10002));
+        Map<String, Claim> map = optionalMap.orElseThrow(() -> new ApiException(ResultCode.UNAUTHORIZED));
 
         //judge if user has permission
         boolean valid = this.hasPermission(scopeLevel.get(), map);
@@ -90,7 +90,7 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
         //user's scope
         Integer scope = map.get("scope").asInt();
         if (level > scope) {
-            throw new ForbiddenException(10004);
+            throw new ApiException(ResultCode.FORBIDDEN);
         }
         return true;
     }
