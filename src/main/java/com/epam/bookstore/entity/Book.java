@@ -22,7 +22,7 @@ public class Book {
     String category;
     String price;
     //    @Column(name = "total_count")
-    int total_count;
+    int totalCount;
     int sold;
 
 

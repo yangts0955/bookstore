@@ -23,7 +23,7 @@ public class BookDTO {
                 .title(this.getTitle())
                 .category(this.getCategory())
                 .price(this.getPrice())
-                .total_count(this.getCount())
+                .totalCount(this.getCount())
                 .build();
     }
 }
