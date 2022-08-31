@@ -63,7 +63,6 @@ public class BookServiceImpl implements BookService {
             BeanUtils.copyProperties(book, bookVO);
             return bookVO;
         }).collect(Collectors.toList());
-//        System.out.println(bookList);
         return bookList;
     }
 }
