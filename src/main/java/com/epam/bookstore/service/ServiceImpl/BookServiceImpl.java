@@ -36,7 +36,7 @@ public class BookServiceImpl implements BookService {
         Optional<Book> existedBook = bookRepository.findByTitleAndAuthor(bookDTO.getTitle(), bookDTO.getAuthor());
         existedBook.ifPresentOrElse(b -> {
             //add count to existed book's total count
-            b.setTotal_count(b.getTotal_count() + bookDTO.getCount());
+            b.setTotalCount(b.getTotalCount() + bookDTO.getCount());
             bookRepository.save(b);
         }, () -> {throw new ApiException(ResultCode.FAILED);});
         return true;
@@ -58,12 +58,11 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<BookVO> getAllBooks() {
         List<Book> books = bookRepository.findAll();
-        List<BookVO> book_list = books.stream().map(book -> {
+        List<BookVO> bookList = books.stream().map(book -> {
             BookVO bookVO = new BookVO();
             BeanUtils.copyProperties(book, bookVO);
             return bookVO;
         }).collect(Collectors.toList());
-//        System.out.println(book_list);
-        return book_list;
+        return bookList;
     }
 }
