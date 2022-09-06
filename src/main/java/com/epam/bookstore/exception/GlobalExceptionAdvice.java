@@ -22,6 +22,7 @@ public class GlobalExceptionAdvice {
     @ResponseBody
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
     public CommonResult<Object> handleException(HttpServletRequest req, Exception e) {
+        System.out.println(e);
         return CommonResult.failed("serve error");
     }
 

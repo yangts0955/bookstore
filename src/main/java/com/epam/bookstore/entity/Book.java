@@ -21,7 +21,6 @@ public class Book {
     String title;
     String category;
     String price;
-    //    @Column(name = "total_count")
     int totalCount;
     int sold;
 

@@ -48,7 +48,6 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
         }
         String token = tokens[1];
 
-        //!!!!!!!!!!!!获取token验证???
         if (!JwtToken.verifyToken(token)){
             throw new ApiException(ResultCode.UNAUTHORIZED);
         }

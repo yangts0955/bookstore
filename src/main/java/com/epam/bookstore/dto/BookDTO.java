@@ -11,6 +11,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class BookDTO {
+
+    int id;
     String author;
     String title;
     String category;
@@ -19,6 +21,7 @@ public class BookDTO {
 
     public Book convertBookDTOToBook(){
         return Book.builder()
+                .id(this.id)
                 .author(this.getAuthor())
                 .title(this.getTitle())
                 .category(this.getCategory())

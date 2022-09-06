@@ -16,5 +16,6 @@ public class BookVO {
     String title;
     String category;
     String price;
-    int total_count;
+    int totalCount;
+    int sold;
 }
