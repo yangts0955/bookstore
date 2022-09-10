@@ -24,6 +24,8 @@ public class BookServiceImpl implements BookService {
     @Autowired
     private BookRepository bookRepository;
 
+    private String placeholder = "%";
+
     @Override
     public Boolean addNewBook(BookDTO bookDTO) {
             Book newBook = bookDTO.convertBookDTOToBook();
@@ -73,22 +75,23 @@ public class BookServiceImpl implements BookService {
     public Integer getNumberOfBooks(int id) {
         Optional<Book> book = bookRepository.findById(id);
         book.orElseThrow(() -> new ApiException(ResultCode.VALIDATE_FAILED));
-        return book.get().getTotalCount() - book.get().getSold();
+        return book.get().getNumberOfAvailableBooks();
     }
 
     @Override
-    public Boolean updateBook(int id, BookDTO bookDTO) {
-        Optional<Book> existedBook = bookRepository.findById(id);
+    public Boolean updateBook(int bookId, BookDTO bookDTO) {
+        Optional<Book> existedBook = bookRepository.findById(bookId);
         existedBook.orElseThrow(() -> {throw new ApiException(ResultCode.VALIDATE_FAILED);});
-        int bookDTOId = bookDTO.getId();
-        if (bookDTOId != 0 && id != bookDTOId){
-            throw new ApiException(ResultCode.VALIDATE_FAILED);
-        }
-        bookDTO.setId(id);
-        Book book = bookDTO.convertBookDTOToBook();
-        book.setSold(existedBook.get().getSold());
+        bookIdValidation(bookId,bookDTO.getId());
+        Book book = bookDTO.convertBookDTOToBook(bookId,existedBook.get().getSold());
         bookRepository.save(book);
         return true;
+    }
+
+    private void bookIdValidation(int bookId, int bookDTOId){
+        if (bookDTOId != 0 && bookId != bookDTOId){
+            throw new ApiException(ResultCode.VALIDATE_FAILED);
+        }
     }
 
     @Override
@@ -97,22 +100,24 @@ public class BookServiceImpl implements BookService {
         existedBook.ifPresentOrElse(book -> {
             book.setSold(book.getSold() +1);
             //if no enough book can be sold
-            if (book.getSold() > book.getTotalCount()){
-                throw new ApiException(ResultCode.NO_ENOUGH_BOOK);
-            }
+            bookAvailableCheck(book);
             bookRepository.save(book);
         }, ()-> {throw new ApiException(ResultCode.VALIDATE_FAILED);});
         return true;
     }
 
-    public Boolean sellABookWithCount(int id, int count) {
-        Optional<Book> existedBook = bookRepository.findById(id);
+    private void bookAvailableCheck(Book book){
+        if (book.getSold() > book.getTotalCount()){
+            throw new ApiException(ResultCode.NO_ENOUGH_BOOK);
+        }
+    }
+
+    public Boolean sellABookWithCount(int soldBookId, int soldCount) {
+        Optional<Book> existedBook = bookRepository.findById(soldBookId);
         existedBook.ifPresentOrElse(book -> {
-            book.setSold(book.getSold() + count);
+            book.setSold(book.getSold() + soldCount);
             //if no enough book can be sold
-            if (book.getSold() > book.getTotalCount()){
-                throw new ApiException(ResultCode.NO_ENOUGH_BOOK);
-            }
+            bookAvailableCheck(book);
             bookRepository.save(book);
         }, ()-> {throw new ApiException(ResultCode.VALIDATE_FAILED);});
         return true;
@@ -128,7 +133,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookVO> getBooksByCategoryAndKeyword(String category, String keyword) {
-        String likeKeyword = "%" + keyword + "%";
+        String likeKeyword = placeholder + keyword + placeholder;
         List<Optional<Book>> books = bookRepository.findAllByCategoryAndKeyword(category, likeKeyword);
         List<BookVO> bookList = books.stream().map(book -> {
             BookVO bookVO = new BookVO();

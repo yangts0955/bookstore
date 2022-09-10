@@ -38,6 +38,7 @@ public class BookController {
         return CommonResult.success(bookService.getBookById(id));
     }
 
+    @ScopeLevel(8)
     @GetMapping("/book-list")
     public CommonResult<List<BookVO>> getAllBooks() {
         return CommonResult.success(bookService.getAllBooks());
@@ -48,17 +49,17 @@ public class BookController {
         return CommonResult.success(bookService.getNumberOfBooks(id));
     }
 
-    @PostMapping("books/{id}")
+    @PutMapping("books/{id}")
     public CommonResult<Boolean> updateBook(@PathVariable int id, @RequestBody BookDTO bookDTO){
         return CommonResult.success(bookService.updateBook(id, bookDTO));
     }
 
-    @GetMapping("sell-book/{id}")
+    @PutMapping("sell-book/{id}")
     public CommonResult<Boolean> sellBook(@PathVariable int id){
         return CommonResult.success(bookService.sellABook(id));
     }
 
-    @PostMapping("sell-books")
+    @PutMapping("sell-books")
     public CommonResult<Boolean> sellBooks(@RequestBody List<SellDTO> sellDTOs){
         return CommonResult.success(bookService.sellBooks(sellDTOs));
     }

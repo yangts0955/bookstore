@@ -24,5 +24,8 @@ public class Book {
     int totalCount;
     int sold;
 
+    public Integer getNumberOfAvailableBooks(){
+        return this.totalCount - this.sold;
+    }
 
 }

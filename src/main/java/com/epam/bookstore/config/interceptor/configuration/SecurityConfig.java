@@ -20,6 +20,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+
+        http.cors()
+                .and().csrf().disable();
+
+
+        http.authorizeRequests()
+                .and()
+                .exceptionHandling()
+                .and()
+                .formLogin()  // 登录
+                .permitAll()  //允许所有用户
+                .and()
+                .logout()      // 退出
+                .permitAll();   //允许所有用户
+
+        http.headers().cacheControl();
+    }
+
+
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {

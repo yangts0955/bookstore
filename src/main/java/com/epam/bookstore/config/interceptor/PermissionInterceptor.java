@@ -57,7 +57,8 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
         Map<String, Claim> map = optionalMap.orElseThrow(() -> new ApiException(ResultCode.UNAUTHORIZED));
 
         //judge if user has permission
-        boolean valid = this.hasPermission(scopeLevel.get(), map);
+        boolean valid = this.
+                hasPermission(scopeLevel.get(), map);
 
         if (valid) {
             this.setToThreadLocal(map);

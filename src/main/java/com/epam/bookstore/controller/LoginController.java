@@ -18,9 +18,8 @@ public class LoginController {
         return CommonResult.success("hello");
     }
 
-
     @PostMapping("login")
-    public CommonResult<Boolean> login(@RequestBody User user) {
+    public CommonResult<String> login(@RequestBody User user) {
         return CommonResult.success(loginService.login(user));
     }
 
