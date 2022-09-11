@@ -5,6 +5,7 @@ import com.epam.bookstore.config.jwt.JwtToken;
 import com.epam.bookstore.entity.User;
 import com.epam.bookstore.exception.ApiException;
 import com.epam.bookstore.exception.ResultCode;
+import com.epam.bookstore.repository.UserRepository;
 import com.epam.bookstore.service.ServiceImpl.UserServiceImpl;
 import com.epam.bookstore.config.threadLocal.LocalUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ import java.util.Optional;
 public class PermissionInterceptor extends HandlerInterceptorAdapter {
 
     @Autowired
-    private UserServiceImpl userService;
+    private UserRepository userRepository;
 
     public PermissionInterceptor() {
         super();
@@ -80,7 +81,7 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
     private void setToThreadLocal(Map<String, Claim> map) {
         int uid = map.get("uid").asInt();
         int scope = map.get("scope").asInt();
-        User user = userService.getUserValidationById(uid);
+        User user = userRepository.findByUserId(uid);
         LocalUser.set(user, scope);
     }
 

@@ -28,12 +28,12 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Boolean addNewBook(BookDTO bookDTO) {
-            Book newBook = bookDTO.convertBookDTOToBook();
-            if (newBook == null){
-                throw new ApiException(ResultCode.FAILED);
-            }
-            bookRepository.save(newBook);
-            return true;
+        Book newBook = bookDTO.convertBookDTOToBook();
+        if (newBook == null) {
+            throw new ApiException(ResultCode.FAILED);
+        }
+        bookRepository.save(newBook);
+        return true;
     }
 
     @Override
@@ -51,23 +51,14 @@ public class BookServiceImpl implements BookService {
     public BookVO getBookById(int id) {
         Optional<Book> book = bookRepository.findById(id);
         book.orElseThrow(() -> new ApiException(ResultCode.VALIDATE_FAILED));
-
-        BookVO bookVO = new BookVO();
-        //copy properties from finding book to a new book vo which is needed to return
-        book.ifPresent(b -> {
-            BeanUtils.copyProperties(b, bookVO);
-        });
+        BookVO bookVO = book.get().convertBookToBookVO();
         return bookVO;
     }
 
     @Override
     public List<BookVO> getAllBooks() {
         List<Book> books = bookRepository.findAll();
-        List<BookVO> bookList = books.stream().map(book -> {
-            BookVO bookVO = new BookVO();
-            BeanUtils.copyProperties(book, bookVO);
-            return bookVO;
-        }).toList();
+        List<BookVO> bookList = books.stream().map(Book::convertBookToBookVO).toList();
         return bookList;
     }
 
@@ -135,11 +126,7 @@ public class BookServiceImpl implements BookService {
     public List<BookVO> getBooksByCategoryAndKeyword(String category, String keyword) {
         String likeKeyword = placeholder + keyword + placeholder;
         List<Optional<Book>> books = bookRepository.findAllByCategoryAndKeyword(category, likeKeyword);
-        List<BookVO> bookList = books.stream().map(book -> {
-            BookVO bookVO = new BookVO();
-            BeanUtils.copyProperties(book.get(), bookVO);
-            return bookVO;
-        }).toList();
+        List<BookVO> bookList = books.stream().map(book -> book.get().convertBookToBookVO()).toList();
         return bookList;
     }
 

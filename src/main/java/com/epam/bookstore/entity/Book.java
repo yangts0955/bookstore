@@ -1,6 +1,8 @@
 package com.epam.bookstore.entity;
 
+import com.epam.bookstore.vo.BookVO;
 import lombok.*;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -26,6 +28,12 @@ public class Book {
 
     public Integer getNumberOfAvailableBooks(){
         return this.totalCount - this.sold;
+    }
+
+    public BookVO convertBookToBookVO(){
+        BookVO bookVO = new BookVO();
+        BeanUtils.copyProperties(this, bookVO);
+        return bookVO;
     }
 
 }

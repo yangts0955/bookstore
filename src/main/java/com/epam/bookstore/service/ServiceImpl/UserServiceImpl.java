@@ -9,12 +9,5 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Override
-    public User getUserValidationById(int user_id) {
-        return userRepository.findByUserId(user_id);
-    }
 
 }
