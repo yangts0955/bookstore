@@ -4,6 +4,8 @@ import com.epam.bookstore.entity.User;
 
 public interface LoginService {
 
-    String verifyUserPassword(User userValidation);
+    String login(User user);
+
+    Boolean logout();
 
 }

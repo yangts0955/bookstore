@@ -1,23 +1,30 @@
 package com.epam.bookstore.controller;
 
 import com.epam.bookstore.entity.User;
-import com.epam.bookstore.service.ServiceImpl.LoginServiceImpl;
+import com.epam.bookstore.exception.CommonResult;
+import com.epam.bookstore.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/")
 public class LoginController {
 
     @Autowired
-    private LoginServiceImpl loginService;
+    private LoginService loginService;
 
+    @GetMapping("hello")
+    public CommonResult<String> hello(){
+        return CommonResult.success("hello");
+    }
 
-    @PostMapping("/")
-    public String login(@RequestBody User user) {
-        return loginService.verifyUserPassword(user);
+    @PostMapping("login")
+    public CommonResult<String> login(@RequestBody User user) {
+        return CommonResult.success(loginService.login(user));
+    }
+
+    @RequestMapping("logout")
+    public CommonResult<Boolean> logout(){
+        return CommonResult.success(loginService.logout());
     }
 }

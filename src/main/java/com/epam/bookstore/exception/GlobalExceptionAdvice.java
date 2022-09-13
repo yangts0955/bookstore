@@ -2,6 +2,7 @@ package com.epam.bookstore.exception;
 
 import com.epam.bookstore.exception.ApiException;
 import com.epam.bookstore.exception.CommonResult;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

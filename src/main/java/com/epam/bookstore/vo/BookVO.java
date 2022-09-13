@@ -1,13 +1,11 @@
 package com.epam.bookstore.vo;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookVO {
@@ -16,5 +14,6 @@ public class BookVO {
     String title;
     String category;
     String price;
-    int total_count;
+    int totalCount;
+    int sold;
 }

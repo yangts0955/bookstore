@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BookServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">BookServiceTest Coverage Results</a> &gt; <a href="index.source.html" class="el_package">com.epam.bookstore.service.ServiceImpl</a> &gt; <span class="el_source">BookServiceImpl.java</span></div><h1>BookServiceImpl.java</h1><pre class="source lang-java linenums">package com.epam.bookstore.service.ServiceImpl;
+
+import com.epam.bookstore.dto.BookDTO;
+import com.epam.bookstore.dto.SellDTO;
+import com.epam.bookstore.exception.ApiException;
+import com.epam.bookstore.exception.ResultCode;
+import com.epam.bookstore.service.BookService;
+import com.epam.bookstore.vo.BookVO;
+import com.epam.bookstore.entity.Book;
+import com.epam.bookstore.repository.BookRepository;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.swing.text.html.Option;
+import javax.xml.transform.Result;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Service
+<span class="fc" id="L22">public class BookServiceImpl implements BookService {</span>
+
+    @Autowired
+    private BookRepository bookRepository;
+
+<span class="fc" id="L27">    private String placeholder = &quot;%&quot;;</span>
+
+    @Override
+    public Boolean addNewBook(BookDTO bookDTO) {
+<span class="nc" id="L31">        Book newBook = bookDTO.convertBookDTOToBook();</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">        if (newBook == null) {</span>
+<span class="nc" id="L33">            throw new ApiException(ResultCode.FAILED);</span>
+        }
+<span class="nc" id="L35">        bookRepository.save(newBook);</span>
+<span class="nc" id="L36">        return true;</span>
+    }
+
+    @Override
+    public Boolean addBook(BookDTO bookDTO) {
+<span class="nc" id="L41">        Optional&lt;Book&gt; existedBook = bookRepository.findByTitleAndAuthor(bookDTO.getTitle(), bookDTO.getAuthor());</span>
+<span class="nc" id="L42">        existedBook.ifPresentOrElse(b -&gt; {</span>
+            //add count to existed book's total count
+<span class="nc" id="L44">            b.setTotalCount(b.getTotalCount() + bookDTO.getCount());</span>
+<span class="nc" id="L45">            bookRepository.save(b);</span>
+<span class="nc" id="L46">        }, () -&gt; {throw new ApiException(ResultCode.VALIDATE_FAILED);});</span>
+<span class="nc" id="L47">        return true;</span>
+    }
+
+    @Override
+    public BookVO getBookById(int id) {
+<span class="nc" id="L52">        Optional&lt;Book&gt; book = bookRepository.findById(id);</span>
+<span class="nc" id="L53">        book.orElseThrow(() -&gt; new ApiException(ResultCode.VALIDATE_FAILED));</span>
+
+<span class="nc" id="L55">        BookVO bookVO = new BookVO();</span>
+        //copy properties from finding book to a new book vo which is needed to return
+<span class="nc" id="L57">        book.ifPresent(b -&gt; {</span>
+<span class="nc" id="L58">            BeanUtils.copyProperties(b, bookVO);</span>
+<span class="nc" id="L59">        });</span>
+<span class="nc" id="L60">        return bookVO;</span>
+    }
+
+    @Override
+    public List&lt;BookVO&gt; getAllBooks() {
+<span class="nc" id="L65">        List&lt;Book&gt; books = bookRepository.findAll();</span>
+<span class="nc" id="L66">        List&lt;BookVO&gt; bookList = books.stream().map(book -&gt; {</span>
+<span class="nc" id="L67">            BookVO bookVO = new BookVO();</span>
+<span class="nc" id="L68">            BeanUtils.copyProperties(book, bookVO);</span>
+<span class="nc" id="L69">            return bookVO;</span>
+<span class="nc" id="L70">        }).toList();</span>
+<span class="nc" id="L71">        return bookList;</span>
+    }
+
+    @Override
+    public Integer getNumberOfBooks(int id) {
+<span class="nc" id="L76">        Optional&lt;Book&gt; book = bookRepository.findById(id);</span>
+<span class="nc" id="L77">        book.orElseThrow(() -&gt; new ApiException(ResultCode.VALIDATE_FAILED));</span>
+<span class="nc" id="L78">        return book.get().getNumberOfAvailableBooks();</span>
+    }
+
+    @Override
+    public Boolean updateBook(int bookId, BookDTO bookDTO) {
+<span class="nc" id="L83">        Optional&lt;Book&gt; existedBook = bookRepository.findById(bookId);</span>
+<span class="nc" id="L84">        existedBook.orElseThrow(() -&gt; {throw new ApiException(ResultCode.VALIDATE_FAILED);});</span>
+<span class="nc" id="L85">        bookIdValidation(bookId,bookDTO.getId());</span>
+<span class="nc" id="L86">        Book book = bookDTO.convertBookDTOToBook(bookId,existedBook.get().getSold());</span>
+<span class="nc" id="L87">        bookRepository.save(book);</span>
+<span class="nc" id="L88">        return true;</span>
+    }
+
+    private void bookIdValidation(int bookId, int bookDTOId){
+<span class="nc bnc" id="L92" title="All 4 branches missed.">        if (bookDTOId != 0 &amp;&amp; bookId != bookDTOId){</span>
+<span class="nc" id="L93">            throw new ApiException(ResultCode.VALIDATE_FAILED);</span>
+        }
+<span class="nc" id="L95">    }</span>
+
+    @Override
+    public Boolean sellABook(int id) {
+<span class="nc" id="L99">        Optional&lt;Book&gt; existedBook = bookRepository.findById(id);</span>
+<span class="nc" id="L100">        existedBook.ifPresentOrElse(book -&gt; {</span>
+<span class="nc" id="L101">            book.setSold(book.getSold() +1);</span>
+            //if no enough book can be sold
+<span class="nc" id="L103">            bookAvailableCheck(book);</span>
+<span class="nc" id="L104">            bookRepository.save(book);</span>
+<span class="nc" id="L105">        }, ()-&gt; {throw new ApiException(ResultCode.VALIDATE_FAILED);});</span>
+<span class="nc" id="L106">        return true;</span>
+    }
+
+    private void bookAvailableCheck(Book book){
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        if (book.getSold() &gt; book.getTotalCount()){</span>
+<span class="nc" id="L111">            throw new ApiException(ResultCode.NO_ENOUGH_BOOK);</span>
+        }
+<span class="nc" id="L113">    }</span>
+
+    public Boolean sellABookWithCount(int soldBookId, int soldCount) {
+<span class="nc" id="L116">        Optional&lt;Book&gt; existedBook = bookRepository.findById(soldBookId);</span>
+<span class="nc" id="L117">        existedBook.ifPresentOrElse(book -&gt; {</span>
+<span class="nc" id="L118">            book.setSold(book.getSold() + soldCount);</span>
+            //if no enough book can be sold
+<span class="nc" id="L120">            bookAvailableCheck(book);</span>
+<span class="nc" id="L121">            bookRepository.save(book);</span>
+<span class="nc" id="L122">        }, ()-&gt; {throw new ApiException(ResultCode.VALIDATE_FAILED);});</span>
+<span class="nc" id="L123">        return true;</span>
+    }
+
+    @Override
+    public Boolean sellBooks(List&lt;SellDTO&gt; sellDTOs){
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        for (SellDTO sellDTO : sellDTOs){</span>
+<span class="nc" id="L129">            sellABookWithCount(sellDTO.getId(), sellDTO.getCount());</span>
+<span class="nc" id="L130">        }</span>
+<span class="nc" id="L131">        return true;</span>
+    };
+
+    @Override
+    public List&lt;BookVO&gt; getBooksByCategoryAndKeyword(String category, String keyword) {
+<span class="nc" id="L136">        String likeKeyword = placeholder + keyword + placeholder;</span>
+<span class="nc" id="L137">        List&lt;Optional&lt;Book&gt;&gt; books = bookRepository.findAllByCategoryAndKeyword(category, likeKeyword);</span>
+<span class="nc" id="L138">        List&lt;BookVO&gt; bookList = books.stream().map(book -&gt; {</span>
+<span class="nc" id="L139">            BookVO bookVO = new BookVO();</span>
+<span class="nc" id="L140">            BeanUtils.copyProperties(book.get(), bookVO);</span>
+<span class="nc" id="L141">            return bookVO;</span>
+<span class="nc" id="L142">        }).toList();</span>
+<span class="nc" id="L143">        return bookList;</span>
+    }
+
+    @Override
+    public Integer getSoldNumberByCategoryAndKeyword(String category, String keyword) {
+<span class="nc" id="L148">        int count = 0;</span>
+<span class="nc" id="L149">        List&lt;BookVO&gt; books = getBooksByCategoryAndKeyword(category, keyword);</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">        for (BookVO book : books){</span>
+<span class="nc" id="L151">            count += book.getSold();</span>
+<span class="nc" id="L152">        }</span>
+<span class="nc" id="L153">        return count;</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
