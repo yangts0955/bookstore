@@ -1,0 +1,37 @@
+version: "3.8"
+services:
+  # 服务名称
+  compose-test:
+    # Dockerfile所在目录
+    build: .
+    # 镜像名称
+    image: ascdc/jdk8
+    # 容器名称
+    container_name: compose-test
+    restart: always
+    # 端口
+    ports:
+      - "8082:8082"
+    # 挂载
+    volumes:
+      - /home/server/boot-demo-test/boot-demo-8081/logs:/usr/local/application/logs
+    environment:
+      SERVER_NAME: "this-is-boot-demo-8081"
+
+  mysql:
+    #指定服务使用的镜像
+    image: mysql
+    #指定容器名称
+    container_name: mysql-test-c
+    restart: always
+    #指定服务运行的端口
+    ports :
+      - "3308:3306"
+    #指定容器的环境变量
+    environment:
+      #数据库密码
+      - MYSQL_ROOT_PASSWORD=root
+      #创建的库
+      - MYSQL_DATABASE=saas
+      #允许多IP连接数据库
+      - MYSQL_ROOT_HOST=%
