@@ -1,0 +1,356 @@
+{
+	"info": {
+		"_postman_id": "159d5c31-e498-4f08-8d86-07ae6bd9411f",
+		"name": "bookstore",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get-book-by-id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/book/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"book",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add-new-books",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjEsInNjb3BlIjo4LCJleHAiOjE2NjEzMzAxNzYsImlhdCI6MTY2MTI0Mzc3Nn0.esden12FsbEDdlqYVzXiya9yUeHkRzp8LYeRohrl6Rw",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":8,\r\n    \"author\": \"author-test\",\r\n    \"title\": \"title-test\",\r\n    \"category\": \"category-test\",\r\n    \"price\": \"99.99\",\r\n    \"count\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/add-new-book",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"add-new-book"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add-book",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjEsInNjb3BlIjo4LCJleHAiOjE2NjI5NzEyNzAsImlhdCI6MTY2Mjg4NDg3MH0.wFTh_E4uxqh9xDoJFWp16fzGzoGOf92Y5KhBNzbL7jc",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"author\": \"a-test\",\r\n    \"title\": \"t-test\",\r\n    \"category\": \"category-test\",\r\n    \"price\": \"99.99\",\r\n    \"count\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/add-book",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"add-book"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-all-books",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjEsInNjb3BlIjo4LCJleHAiOjE2NjI4ODIxNTYsImlhdCI6MTY2Mjc5NTc1Nn0.NBYeXiMcKt09YcmAvdgSpKBtR1c_fttHdIAlkK-aGHE",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/api/book-list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"book-list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"root\",\r\n    \"password\": \"root\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/login/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login2",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\": \"user\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/login/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateBook",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"author\": \"Bob\",\r\n    \"title\": \"title-test-Bob\",\r\n    \"category\": \"category-test-Bob\",\r\n    \"price\": \"35.2345\",\r\n    \"count\": 50\r\n}\r\n\r\n// {\r\n//     \"id\": 6,\r\n//     \"author\": \"author-test\",\r\n//     \"title\": \"title-test\",\r\n//     \"category\": \"category-test\",\r\n//     \"price\": \"99.99\",\r\n//     \"count\": 10\r\n// }\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/books/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"books",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sellABook",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/sell-book/6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"sell-book",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "sellBooks",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"id\":1,\r\n        \"count\":6\r\n    },\r\n    {\r\n        \"id\":6,\r\n        \"count\":1\r\n    }\r\n]\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/sell-books",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"sell-books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getBooksByCategoryAndKeyword",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/books?keyword=test&category=category-test",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"books"
+					],
+					"query": [
+						{
+							"key": "keyword",
+							"value": "test"
+						},
+						{
+							"key": "category",
+							"value": "category-test"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getSoldNumberOfBooksByCategoryAndKeyword",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/number-of-books?keyword=test&category=category-test",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"number-of-books"
+					],
+					"query": [
+						{
+							"key": "keyword",
+							"value": "test"
+						},
+						{
+							"key": "category",
+							"value": "category-test"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

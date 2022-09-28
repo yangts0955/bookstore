@@ -73,6 +73,11 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-hateoas</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -89,7 +94,6 @@
                 <version>0.6.4.201312101107</version>
                 <executions>
                     <execution>
-                        <!-- 在maven的initialize阶段，将Jacoco的runtime agent作为VM的一个参数 传给被测程序，用于监控JVM中的调用。 -->
                         <id>default-prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
@@ -103,9 +107,6 @@
                         </configuration>
 
                     </execution>
-
-                    <!-- 在程序的verify阶段，执行report测试的程序。 文件的输入为perpare-agent阶段中设置或者默认的jacoco.exec.
-                        参数 includes和excludes可用来选定report中过滤的类。 -->
                     <execution>
                         <id>default-report</id>
                         <phase>test</phase>
@@ -123,8 +124,6 @@
                 </executions>
             </plugin>
 
-            <!-- 使用 maven-surefire-plugin来执行单元测试。 将surefireArgLine赋值给argLine参数，以保证在测试执行时Jacoco
-                agent处于运行状态。 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>

@@ -4,13 +4,18 @@ package com.epam.bookstore.controller;
 import com.epam.bookstore.config.interceptor.ScopeLevel;
 import com.epam.bookstore.dto.SellDTO;
 import com.epam.bookstore.exception.CommonResult;
+import com.epam.bookstore.model.BookModel;
 import com.epam.bookstore.service.BookService;
 import com.epam.bookstore.service.ServiceImpl.BookServiceImpl;
 import com.epam.bookstore.vo.BookVO;
 import com.epam.bookstore.dto.BookDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api")
@@ -34,13 +39,17 @@ public class BookController {
     }
 
     @GetMapping("/book/{id}")
-    public CommonResult<BookVO> getBookById(@PathVariable int id) {
-        return CommonResult.success(bookService.getBookById(id));
+    public CommonResult<BookModel> getBookById(@PathVariable int id) {
+        BookModel bookModel = new BookModel(bookService.getBookById(id));
+        bookModel.add(linkTo(methodOn(BookController.class).getBookById(id)).withSelfRel());
+        return CommonResult.success(bookModel);
     }
 
     @GetMapping("/book-list")
-    public CommonResult<List<BookVO>> getAllBooks() {
-        return CommonResult.success(bookService.getAllBooks());
+    public CommonResult<CollectionModel<BookVO>> getAllBooks() {
+        CollectionModel<BookVO> model = CollectionModel.of(bookService.getAllBooks());
+        model.add(linkTo(methodOn(BookController.class).getAllBooks()).withSelfRel());
+        return CommonResult.success(model);
     }
 
     @GetMapping("/number-of-books/{id}")
@@ -66,8 +75,10 @@ public class BookController {
     }
 
     @GetMapping("books")
-    public CommonResult<List<BookVO>> getBooksByCategoryAndKeyword(String category, String keyword){
-        return CommonResult.success(bookService.getBooksByCategoryAndKeyword(category, keyword));
+    public CommonResult<CollectionModel<BookVO>> getBooksByCategoryAndKeyword(String category, String keyword){
+        CollectionModel<BookVO> model = CollectionModel.of(bookService.getBooksByCategoryAndKeyword(category,keyword));
+        model.add(linkTo(methodOn(BookController.class).getBooksByCategoryAndKeyword(category, keyword)).withSelfRel());
+        return CommonResult.success(model);
     }
 
     @GetMapping("number-of-books")

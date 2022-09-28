@@ -1,0 +1,10 @@
+# 基础镜像
+FROM ascdc/jdk8
+# 拷贝jar包到容器中
+COPY bookstore-0.0.1-SNAPSHOT.jar /usr/local
+# 容器工作目录
+WORKDIR /usr/local
+# 设置字符集
+ENV LANG C.UTF-8
+# 启动命令（注意，这里一定要用ENTRYPOINT，不能用CMD）
+ENTRYPOINT ["java", "-jar", "target\bookstore-0.0.1-SNAPSHOT.jar"]
